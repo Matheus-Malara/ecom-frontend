@@ -1,10 +1,10 @@
-export type ProductImage = {
+export interface ProductImage {
     id: number
     imageUrl: string
     displayOrder: number
 }
 
-export type Product = {
+export interface Product {
     id: number
     name: string
     description: string

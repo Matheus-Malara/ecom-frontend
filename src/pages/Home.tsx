@@ -3,6 +3,7 @@ import CategoryGrid from "../components/CategoryGrid"
 import FeaturedProducts from "../components/FeaturedProducts"
 import BenefitsSection from "../components/BenefitsSection"
 import Testimonials from "../components/Testimonials"
+import BrandGrid from "../components/BrandGrid"
 
 export default function Home() {
     return (
@@ -15,6 +16,10 @@ export default function Home() {
 
             <section id="highlights">
                 <FeaturedProducts />
+            </section>
+
+            <section id="brands">
+                <BrandGrid />
             </section>
 
             <section id="benefits">
