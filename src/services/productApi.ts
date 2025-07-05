@@ -30,3 +30,9 @@ export async function getFilteredProducts(
     })
     return response.data.data
 }
+
+export async function getProductById(id: number): Promise<Product> {
+    const res = await fetch(`/api/products/${id}`);
+    const data: StandardResponse<Product> = await res.json();
+    return data.data;
+}

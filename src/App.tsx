@@ -1,22 +1,21 @@
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
-import Home from "./pages/Home"
-import SearchPage from "./pages/SearchPage"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import SearchPage from "./pages/SearchPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import Layout from "./components/Layout";
 
 function App() {
     return (
         <Router>
-            <Header/>
-            <main className="min-h-screen">
+            <Layout>
                 <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/search" element={<SearchPage/>}/>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/search" element={<SearchPage />} />
+                    <Route path="/product/:id" element={<ProductDetailsPage />} />
                 </Routes>
-            </main>
-            <Footer/>
+            </Layout>
         </Router>
-    )
+    );
 }
 
-export default App
+export default App;
