@@ -1,0 +1,90 @@
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import type {Product} from "../types/product";
+import {getProductById} from "../services/productApi";
+import Loading from "../components/Loading";
+
+function ProductDetailsPage() {
+    const {id} = useParams();
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [mainImage, setMainImage] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (id) {
+            getProductById(Number(id))
+                .then((data) => {
+                    setProduct(data);
+                    setMainImage(data.images?.[0]?.imageUrl || "/no-image-available.png");
+                })
+                .finally(() => setLoading(false));
+        }
+    }, [id]);
+
+    if (loading) return <Loading/>;
+
+    if (!product) {
+        return <p className="text-center text-red-500 mt-10">Product not found.</p>;
+    }
+
+    if (!product.active) {
+        return (
+            <p className="text-center text-yellow-600 mt-10 text-lg font-medium">
+                Este produto está atualmente inativo ou fora de estoque.
+            </p>
+        );
+    }
+
+    return (
+        <div className="max-w-6xl mx-auto p-4">
+            <div className="flex flex-col md:flex-row gap-10">
+                {/* Galeria de imagens */}
+                <div className="flex-1">
+                    <div
+                        className="bg-white border rounded-lg overflow-hidden p-2 aspect-square flex items-center justify-center">
+                        <img
+                            src={mainImage || "/no-image-available.png"}
+                            alt={product.name}
+                            className="max-h-[500px] max-w-full object-contain"
+                        />
+                    </div>
+
+
+                    <div className="flex gap-3 overflow-x-auto mt-2">
+                        {product.images.map((img) => (
+                            <img
+                                key={img.id}
+                                src={img.imageUrl}
+                                alt="Miniatura"
+                                onClick={() => setMainImage(img.imageUrl)}
+                                className={`w-16 h-16 object-contain rounded border cursor-pointer transition-transform duration-200 hover:scale-105 ${
+                                    mainImage === img.imageUrl ? "ring-2 ring-green-600" : ""
+                                }`}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Detalhes do produto */}
+                <div className="flex-1">
+                    <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+                    <p className="text-gray-500 mb-1">Marca: {product.brandName}</p>
+                    <p className="text-gray-500 mb-1">Sabor: {product.flavor || "N/A"}</p>
+                    <p className="text-gray-500 mb-1">Categoria: {product.categoryName}</p>
+                    <p className="text-gray-500 mb-1">Peso: {product.weightGrams}g</p>
+                    <p className="text-gray-500 mb-4">Estoque: {product.stock}</p>
+
+                    <p className="text-2xl font-semibold text-green-600 mb-4">
+                        R$ {product.price.toFixed(2)}
+                    </p>
+
+                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                        {product.description}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default ProductDetailsPage;
