@@ -1,9 +1,27 @@
-import { ShoppingCart, Menu, X, Search } from "lucide-react"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import {ShoppingCart, Menu, X, Search} from "lucide-react";
+import {useState, useContext} from "react";
+import {Link} from "react-router-dom";
+import {CartContext} from "@/features/cart/CartContext";
 
-export default function Header() {
-    const [menuOpen, setMenuOpen] = useState(false)
+interface HeaderProps {
+    onCartClick: () => void;
+}
+
+export default function Header({onCartClick}: HeaderProps) {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const {cart} = useContext(CartContext);
+
+    const renderCartIcon = () => (
+        <div className="relative cursor-pointer" onClick={onCartClick}>
+            <ShoppingCart className="w-6 h-6"/>
+            {cart && cart.totalItems > 0 && (
+                <span
+                    className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cart.totalItems}
+                </span>
+            )}
+        </div>
+    );
 
     return (
         <header className="bg-white shadow sticky top-0 z-50">
@@ -19,10 +37,10 @@ export default function Header() {
                     <a href="#benefits">Benefits</a>
                     <a href="#testimonials">Testimonials</a>
                     <Link to="/search" className="flex items-center gap-1 hover:text-yellow-600">
-                        <Search className="w-5 h-5" />
+                        <Search className="w-5 h-5"/>
                         Search
                     </Link>
-                    <ShoppingCart className="w-6 h-6 cursor-pointer" />
+                    {renderCartIcon()}
                 </nav>
 
                 <button
@@ -30,7 +48,7 @@ export default function Header() {
                     onClick={() => setMenuOpen((prev) => !prev)}
                     aria-label="Toggle menu"
                 >
-                    {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    {menuOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6"/>}
                 </button>
             </div>
 
@@ -42,15 +60,18 @@ export default function Header() {
                     <a href="#benefits" onClick={() => setMenuOpen(false)}>Benefits</a>
                     <a href="#testimonials" onClick={() => setMenuOpen(false)}>Testimonials</a>
                     <Link to="/search" onClick={() => setMenuOpen(false)} className="flex items-center gap-2">
-                        <Search className="w-5 h-5" />
+                        <Search className="w-5 h-5"/>
                         <span>Search</span>
                     </Link>
-                    <div className="flex items-center gap-2 pt-2">
-                        <ShoppingCart className="w-5 h-5" />
+                    <div className="flex items-center gap-2 pt-2" onClick={() => {
+                        onCartClick();
+                        setMenuOpen(false);
+                    }}>
+                        {renderCartIcon()}
                         <span>Cart</span>
                     </div>
                 </nav>
             )}
         </header>
-    )
+    );
 }
