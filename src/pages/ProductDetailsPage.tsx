@@ -3,12 +3,18 @@ import {useEffect, useState} from "react";
 import type {Product} from "../types/product";
 import {getProductById} from "../services/productApi";
 import Loading from "../components/Loading";
+import {addToCart} from "../services/cartApi";
+import {toast} from "react-toastify";
+import {useContext} from "react";
+import {CartContext} from "@/features/cart/CartContext";
+
 
 function ProductDetailsPage() {
     const {id} = useParams();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [mainImage, setMainImage] = useState<string | null>(null);
+    const [adding, setAdding] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -20,6 +26,24 @@ function ProductDetailsPage() {
                 .finally(() => setLoading(false));
         }
     }, [id]);
+
+    const {setCart} = useContext(CartContext);
+
+    const handleAddToCart = async () => {
+        if (!product) return;
+        setAdding(true);
+        try {
+            const updatedCart = await addToCart({productId: product.id, quantity: 1});
+            setCart(updatedCart);
+            toast.success("Produto adicionado ao carrinho!");
+        } catch (err) {
+            console.error(err);
+            toast.error("Erro ao adicionar ao carrinho");
+        } finally {
+            setAdding(false);
+        }
+    };
+
 
     if (loading) return <Loading/>;
 
@@ -49,7 +73,6 @@ function ProductDetailsPage() {
                         />
                     </div>
 
-
                     <div className="flex gap-3 overflow-x-auto mt-2">
                         {product.images.map((img) => (
                             <img
@@ -78,7 +101,17 @@ function ProductDetailsPage() {
                         R$ {product.price.toFixed(2)}
                     </p>
 
-                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                    <button
+                        onClick={handleAddToCart}
+                        disabled={product.stock === 0 || adding}
+                        className={`bg-green-600 text-white px-6 py-2 rounded-md font-semibold transition ${
+                            product.stock === 0 || adding ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
+                        }`}
+                    >
+                        {adding ? "Adicionando..." : "Adicionar ao carrinho"}
+                    </button>
+
+                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed mt-6">
                         {product.description}
                     </p>
                 </div>
