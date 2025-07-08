@@ -1,13 +1,41 @@
 import {useContext} from "react";
 import {CartContext} from "./CartContext";
 import CartItemComponent from "./CartItemComponent";
+import {clearCart} from "@/services/cartApi";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "@/features/auth/useAuth";
 
 interface CartDrawerProps {
     onClose: () => void;
 }
 
 export default function CartDrawer({onClose}: CartDrawerProps) {
-    const {cart} = useContext(CartContext);
+    const {cart, setCart} = useContext(CartContext);
+    const navigate = useNavigate();
+    const {isAuthenticated} = useAuth();
+
+    const handleClearCart = async () => {
+        try {
+            await clearCart();
+            setCart(null);
+            toast.success("Cart cleared successfully");
+        } catch (err) {
+            console.error("Failed to clear cart:", err);
+            toast.error("Failed to clear cart");
+        }
+    };
+
+    const handleCheckout = () => {
+        if (!isAuthenticated) {
+            toast.info("You need to log in to proceed to checkout");
+            navigate("/login");
+            return;
+        }
+
+        // Redirecionar para tela de checkout (ou futuro fluxo)
+        navigate("/checkout");
+    };
 
     if (!cart || cart.items.length === 0) {
         return (
@@ -18,7 +46,7 @@ export default function CartDrawer({onClose}: CartDrawerProps) {
                 >
                     ×
                 </button>
-                <p className="text-gray-500">Seu carrinho está vazio.</p>
+                <p className="text-gray-500">Your cart is empty.</p>
             </div>
         );
     }
@@ -31,13 +59,27 @@ export default function CartDrawer({onClose}: CartDrawerProps) {
             >
                 ×
             </button>
-            <h2 className="text-xl font-bold mb-4">Meu Carrinho</h2>
+            <h2 className="text-xl font-bold mb-4">My Cart</h2>
             {cart.items.map((item) => (
                 <CartItemComponent key={item.productId} item={item}/>
             ))}
             <p className="text-right font-bold text-lg mt-2">
-                Total: R$ {cart.totalAmount.toFixed(2)}
+                Total: ${cart.totalAmount.toFixed(2)}
             </p>
+
+            <button
+                onClick={handleCheckout}
+                className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+            >
+                Proceed to Checkout
+            </button>
+
+            <button
+                onClick={handleClearCart}
+                className="w-full mt-2 bg-red-100 hover:bg-red-200 text-red-600 font-semibold py-2 px-4 rounded"
+            >
+                Clear Cart
+            </button>
         </div>
     );
 }
