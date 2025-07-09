@@ -4,7 +4,7 @@ import CartItemComponent from "./CartItemComponent";
 import {clearCart} from "@/services/cartApi";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "@/features/auth/useAuth";
+import {useAuth} from "@/features/auth/useAuth.tsx";
 
 interface CartDrawerProps {
     onClose: () => void;
@@ -33,7 +33,6 @@ export default function CartDrawer({onClose}: CartDrawerProps) {
             return;
         }
 
-        // Redirecionar para tela de checkout (ou futuro fluxo)
         navigate("/checkout");
     };
 

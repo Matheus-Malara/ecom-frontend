@@ -1,18 +1,23 @@
 import React, {useEffect, useState} from "react";
-import {getAccount, updateAccount} from "@/services/userApi.ts";
+import {getAccount, updateAccount} from "@/services/userApi";
 import {toast} from "react-toastify";
+import {useAuth} from "@/features/auth/useAuth";
 
 export default function AccountPage() {
+    const {logout, isAuthenticated} = useAuth();
     const [user, setUser] = useState<{ firstName: string; lastName: string; email: string } | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         getAccount()
             .then(setUser)
             .catch(() => toast.error("Failed to fetch account data"))
             .finally(() => setLoading(false));
-    }, []);
+    }, [isAuthenticated]);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!user) return;
@@ -37,7 +42,6 @@ export default function AccountPage() {
     };
 
     if (loading) return <div className="p-4">Loading account...</div>;
-
     if (!user) return <div className="p-4 text-red-500">No account data found</div>;
 
     return (
@@ -82,6 +86,13 @@ export default function AccountPage() {
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             >
                 {saving ? "Saving..." : "Save Changes"}
+            </button>
+
+            <button
+                onClick={logout}
+                className="w-full mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+            >
+                Logout
             </button>
         </div>
     );

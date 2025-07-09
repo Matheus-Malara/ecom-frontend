@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate, useLocation, Link} from "react-router-dom";
-import {useAuth} from "@/features/auth/useAuth";
+import {useAuth} from "@/features/auth/useAuth.tsx";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");

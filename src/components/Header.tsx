@@ -2,7 +2,7 @@ import {ShoppingCart, Menu, X, Search, UserCircle} from "lucide-react";
 import {useState, useContext} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {CartContext} from "@/features/cart/CartContext";
-import {useAuth} from "@/features/auth/useAuth";
+import {useAuth} from "@/features/auth/useAuth.tsx";
 
 interface HeaderProps {
     onCartClick: () => void;
