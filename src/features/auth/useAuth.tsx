@@ -1,6 +1,7 @@
-import {createContext, useContext, useState, type ReactNode} from "react";
+import {createContext, type ReactNode, useContext, useState} from "react";
 import {toast} from "react-toastify";
 import {loginUser} from "@/services/authApi";
+import {useNavigate} from "react-router-dom";
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -10,8 +11,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({children}: { children: ReactNode }) => {
+export function AuthProvider({children}: { children: ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(() => !!localStorage.getItem("accessToken"));
+    const navigate = useNavigate();
 
     const login = async (email: string, password: string): Promise<boolean> => {
         try {
@@ -32,8 +34,11 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
     const logout = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("anonymousId");
+
         setIsAuthenticated(false);
         toast.info("Logged out");
+        navigate("/");
     };
 
     return (
@@ -41,7 +46,7 @@ export const AuthProvider = ({children}: { children: ReactNode }) => {
             {children}
         </AuthContext.Provider>
     );
-};
+}
 
 export function useAuth() {
     const context = useContext(AuthContext);
