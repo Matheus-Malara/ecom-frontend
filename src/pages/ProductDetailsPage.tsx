@@ -1,13 +1,11 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import type {Product} from "../types/product";
 import {getProductById} from "../services/productApi";
 import Loading from "../components/Loading";
 import {addToCart} from "../services/cartApi";
 import {toast} from "react-toastify";
-import {useContext} from "react";
 import {CartContext} from "@/features/cart/CartContext";
-
 
 function ProductDetailsPage() {
     const {id} = useParams();
@@ -35,15 +33,14 @@ function ProductDetailsPage() {
         try {
             const updatedCart = await addToCart({productId: product.id, quantity: 1});
             setCart(updatedCart);
-            toast.success("Produto adicionado ao carrinho!");
+            toast.success("Product added to cart!");
         } catch (err) {
             console.error(err);
-            toast.error("Erro ao adicionar ao carrinho");
+            toast.error("Failed to add product to cart.");
         } finally {
             setAdding(false);
         }
     };
-
 
     if (loading) return <Loading/>;
 
@@ -54,7 +51,7 @@ function ProductDetailsPage() {
     if (!product.active) {
         return (
             <p className="text-center text-yellow-600 mt-10 text-lg font-medium">
-                Este produto está atualmente inativo ou fora de estoque.
+                This product is currently inactive or out of stock.
             </p>
         );
     }
@@ -62,7 +59,7 @@ function ProductDetailsPage() {
     return (
         <div className="max-w-6xl mx-auto p-4">
             <div className="flex flex-col md:flex-row gap-10">
-                {/* Galeria de imagens */}
+                {/* Image gallery */}
                 <div className="flex-1">
                     <div
                         className="bg-white border rounded-lg overflow-hidden p-2 aspect-square flex items-center justify-center">
@@ -78,7 +75,7 @@ function ProductDetailsPage() {
                             <img
                                 key={img.id}
                                 src={img.imageUrl}
-                                alt="Miniatura"
+                                alt="Thumbnail"
                                 onClick={() => setMainImage(img.imageUrl)}
                                 className={`w-16 h-16 object-contain rounded border cursor-pointer transition-transform duration-200 hover:scale-105 ${
                                     mainImage === img.imageUrl ? "ring-2 ring-green-600" : ""
@@ -88,17 +85,17 @@ function ProductDetailsPage() {
                     </div>
                 </div>
 
-                {/* Detalhes do produto */}
+                {/* Product details */}
                 <div className="flex-1">
                     <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-                    <p className="text-gray-500 mb-1">Marca: {product.brandName}</p>
-                    <p className="text-gray-500 mb-1">Sabor: {product.flavor || "N/A"}</p>
-                    <p className="text-gray-500 mb-1">Categoria: {product.categoryName}</p>
-                    <p className="text-gray-500 mb-1">Peso: {product.weightGrams}g</p>
-                    <p className="text-gray-500 mb-4">Estoque: {product.stock}</p>
+                    <p className="text-gray-500 mb-1">Brand: {product.brandName}</p>
+                    <p className="text-gray-500 mb-1">Flavor: {product.flavor || "N/A"}</p>
+                    <p className="text-gray-500 mb-1">Category: {product.categoryName}</p>
+                    <p className="text-gray-500 mb-1">Weight: {product.weightGrams}g</p>
+                    <p className="text-gray-500 mb-4">Stock: {product.stock}</p>
 
                     <p className="text-2xl font-semibold text-green-600 mb-4">
-                        R$ {product.price.toFixed(2)}
+                        ${product.price.toFixed(2)}
                     </p>
 
                     <button
@@ -108,7 +105,7 @@ function ProductDetailsPage() {
                             product.stock === 0 || adding ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
                         }`}
                     >
-                        {adding ? "Adicionando..." : "Adicionar ao carrinho"}
+                        {adding ? "Adding..." : "Add to cart"}
                     </button>
 
                     <p className="text-gray-700 whitespace-pre-wrap leading-relaxed mt-6">
