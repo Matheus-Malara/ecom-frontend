@@ -1,4 +1,5 @@
-import { Facebook, Instagram, Mail, Phone } from "lucide-react"
+import {Phone, Mail} from "lucide-react";
+import {siInstagram, siFacebook} from "simple-icons/icons";
 
 export default function Footer() {
     return (
@@ -13,25 +14,50 @@ export default function Footer() {
                     <h4 className="font-bold mb-3">Navigation</h4>
                     <ul className="space-y-2">
                         <li><a href="/">Home</a></li>
-                        <li><a href="#highlights">Highlights</a></li>
-                        <li><a href="#categories">Categories</a></li>
-                        <li><a href="#benefits">Benefits</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 className="font-bold mb-3">Contact</h4>
                     <ul className="space-y-2">
-                        <li className="flex items-center gap-2"><Phone size={16} /> (11) 99999-9999</li>
-                        <li className="flex items-center gap-2"><Mail size={16} /> support@megasupps.com</li>
+                        <li className="flex items-center gap-2"><Phone size={16}/> (11) 99999-9999</li>
+                        <li className="flex items-center gap-2"><Mail size={16}/> support@megasupps.com</li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 className="font-bold mb-3">Follow Us</h4>
                     <div className="flex gap-4">
-                        <a href="#" aria-label="Instagram"><Instagram className="hover:text-yellow-400" /></a>
-                        <a href="#" aria-label="Facebook"><Facebook className="hover:text-yellow-400" /></a>
+                        <a
+                            href="https://instagram.com"
+                            aria-label="Instagram"
+                            className="hover:text-yellow-400"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="w-5 h-5 fill-current text-white hover:text-yellow-400"
+                            >
+                                <path d={siInstagram.path}/>
+                            </svg>
+                        </a>
+                        <a
+                            href="https://facebook.com"
+                            aria-label="Facebook"
+                            className="hover:text-yellow-400"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                className="w-5 h-5 fill-current text-white hover:text-yellow-400"
+                            >
+                                <path d={siFacebook.path}/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -40,5 +66,5 @@ export default function Footer() {
                 &copy; {new Date().getFullYear()} MEGA SUPPS. All rights reserved.
             </div>
         </footer>
-    )
+    );
 }

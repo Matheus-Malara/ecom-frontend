@@ -1,28 +1,30 @@
-import {useEffect, useState} from "react"
-import {motion} from "framer-motion"
-import {getBrands} from "../services/brandApi"
-import type {Brand} from "../types/brand"
+import {useEffect, useState} from "react";
+import {motion} from "framer-motion";
+import {getBrands} from "../services/brandApi";
+import type {Brand} from "../types/brand";
+import {useNavigate} from "react-router-dom";
 
 export default function BrandGrid() {
-    const [brands, setBrands] = useState<Brand[]>([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
+    const [brands, setBrands] = useState<Brand[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getBrands()
             .then((data) => {
-                setBrands(data)
-                setError(false)
+                setBrands(data);
+                setError(false);
             })
             .catch((err) => {
-                console.error("❌ Failed to fetch brands", err)
-                setError(true)
+                console.error("❌ Failed to fetch brands", err);
+                setError(true);
             })
-            .finally(() => setLoading(false))
-    }, [])
+            .finally(() => setLoading(false));
+    }, []);
 
     if (loading) {
-        return <p className="text-center py-10">Loading brands...</p>
+        return <p className="text-center py-10">Loading brands...</p>;
     }
 
     if (error) {
@@ -30,7 +32,7 @@ export default function BrandGrid() {
             <div className="text-center py-10 text-red-600 font-semibold">
                 ⚠️ Failed to load brands. Please try again later.
             </div>
-        )
+        );
     }
 
     if (brands.length === 0) {
@@ -38,7 +40,7 @@ export default function BrandGrid() {
             <div className="text-center py-10 text-gray-500">
                 No brands found.
             </div>
-        )
+        );
     }
 
     return (
@@ -53,6 +55,7 @@ export default function BrandGrid() {
                         viewport={{once: true}}
                         transition={{delay: index * 0.1}}
                         className="bg-white p-4 rounded-xl shadow hover:scale-105 transition cursor-pointer"
+                        onClick={() => navigate(`/search?brandId=${brand.id}`)}
                     >
                         <img
                             src={brand.logoUrl}
@@ -64,5 +67,5 @@ export default function BrandGrid() {
                 ))}
             </div>
         </section>
-    )
+    );
 }

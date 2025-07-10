@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
-import { getFilteredProducts } from "../services/productApi"
+import {useEffect, useState} from "react"
+import {useSearchParams} from "react-router-dom"
+import {getFilteredProducts} from "../services/productApi"
 import type {Product} from "../types/product"
-import type { ProductFilter } from "../types/product-filter"
-import type { Page } from "../types/paginated"
+import type {ProductFilter} from "../types/product-filter"
+import type {Page} from "../types/paginated"
+import ProductCard from "@/pages/ProductCard.tsx";
 
 export default function ProductList() {
     const [params, setParams] = useSearchParams()
@@ -47,35 +48,15 @@ export default function ProductList() {
     return (
         <>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {pageData.content.map((p) => {
-                    const mainImage =
-                        p.images && p.images.length > 0
-                            ? p.images.sort((a, b) => a.displayOrder - b.displayOrder)[0].imageUrl
-                            : "/no-image-available.png"
+                {pageData.content.map((p) => (
+                    <ProductCard key={p.id} product={p}/>
+                ))}
 
-                    return (
-                        <div
-                            key={p.id}
-                            className="bg-white p-4 rounded-xl shadow hover:scale-105 transition cursor-pointer"
-                        >
-                            <img
-                                src={mainImage}
-                                alt={p.name}
-                                className="h-24 mx-auto mb-2 object-contain"
-                            />
-                            <p className="text-center font-medium">{p.name}</p>
-                            <p className="text-center text-sm text-gray-500">{p.flavor}</p>
-                            <p className="text-center text-green-600 font-bold mt-1">
-                                R$ {p.price.toFixed(2)}
-                            </p>
-                        </div>
-                    )
-                })}
             </div>
 
             {pageData.totalPages > 1 && (
                 <div className="flex justify-center gap-2 mt-8">
-                    {Array.from({ length: pageData.totalPages }).map((_, i) => (
+                    {Array.from({length: pageData.totalPages}).map((_, i) => (
                         <button
                             key={i}
                             onClick={() => handlePageChange(i)}

@@ -19,20 +19,30 @@ export default function OrderHistoryTab() {
     return (
         <div className="space-y-6">
             {orders.map((order) => (
-                <div key={order.id} className="border rounded p-4 bg-white shadow">
-                    <div className="flex justify-between items-center mb-2">
+                <div key={order.id} className="border rounded p-4 bg-white shadow space-y-4">
+                    <div className="flex justify-between items-center">
                         <span className="text-gray-700 font-semibold">Order #{order.id}</span>
-                        <span className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</span>
+                        <span className="text-sm text-gray-500">
+                            {new Date(order.createdAt).toLocaleDateString()}
+                        </span>
                     </div>
-                    <div className="text-sm text-gray-600 mb-2">
-                        Status: <strong>{order.status}</strong> |
-                        Total: <strong>${order.totalAmount.toFixed(2)}</strong>
+
+                    <div className="flex justify-between text-sm text-gray-600">
+                        <span>Status: <strong>{order.status}</strong></span>
+                        <span>Total: <strong>${order.totalAmount.toFixed(2)}</strong></span>
                     </div>
-                    <div className="flex flex-col gap-4 mt-2">
+
+                    <div className="flex flex-col divide-y divide-gray-200 mt-2">
                         {order.items.map((item, index) => (
-                            <div key={index} className="flex items-center gap-4">
-                                <img src={item.imageUrl} alt={item.productName}
-                                     className="w-16 h-16 object-contain rounded border"/>
+                            <div
+                                key={index}
+                                className="flex items-center gap-4 py-4 first:pt-0 first:border-none"
+                            >
+                                <img
+                                    src={item.imageUrl}
+                                    alt={item.productName}
+                                    className="w-16 h-16 object-contain rounded border"
+                                />
                                 <div>
                                     <div className="font-medium">{item.productName}</div>
                                     <div className="text-sm text-gray-500">
