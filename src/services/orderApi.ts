@@ -13,7 +13,12 @@ export async function getOrderById(id: number): Promise<Order> {
     return response.data.data;
 }
 
-export async function getUserOrders(page: number = 0, size: number = 10): Promise<StandardResponse<Page<Order>>> {
+export async function getUserOrders(page: number = 0, size: number = 5): Promise<StandardResponse<Page<Order>>> {
     const response = await api.get<StandardResponse<Page<Order>>>(`/orders?page=${page}&size=${size}`);
     return response.data;
+}
+
+export async function cancelOrder(id: number): Promise<Order> {
+    const response = await api.put<StandardResponse<Order>>(`/orders/${id}/cancel`);
+    return response.data.data;
 }
