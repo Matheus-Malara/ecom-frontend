@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom"; // ⬅️ remove o BrowserRouter
+import {Routes, Route} from "react-router-dom";
 import Home from "./pages/Home";
 import SearchPage from "./pages/SearchPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
@@ -8,21 +8,23 @@ import RegisterPage from "./pages/RegisterPage";
 import AccountPage from "@/pages/AccountPage.tsx";
 import CartReviewPage from "./pages/CartReviewPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import { useAuth } from "@/features/auth/useAuth";
+import {useAuth} from "@/features/auth/useAuth";
+import OrderSuccessPage from "@/pages/OrderSuccessPage.tsx";
 
 function App() {
-    const { isAuthenticated } = useAuth();
+    const {isAuthenticated} = useAuth();
     return (
         <Layout key={isAuthenticated ? "auth" : "guest"}>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/product/:id" element={<ProductDetailsPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/user" element={<AccountPage />} />
-                <Route path="/cart" element={<CartReviewPage />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/" element={<Home/>}/>
+                <Route path="/search" element={<SearchPage/>}/>
+                <Route path="/product/:id" element={<ProductDetailsPage/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/register" element={<RegisterPage/>}/>
+                <Route path="/user" element={<AccountPage/>}/>
+                <Route path="/cart" element={<CartReviewPage/>}/>
+                <Route path="/checkout" element={<CheckoutPage/>}/>
+                <Route path="/order-success/:orderId" element={<OrderSuccessPage/>}/>
             </Routes>
         </Layout>
     );

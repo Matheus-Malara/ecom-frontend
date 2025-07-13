@@ -1,75 +1,79 @@
-import {useEffect, useState} from "react";
-import {useParams, Link} from "react-router-dom";
-import {getOrderById} from "@/services/orderApi";
-import type {Order} from "@/types/order";
+import {useParams, useNavigate} from "react-router-dom";
+import {motion} from "framer-motion";
+import {useEffect} from "react";
 
 export default function OrderSuccessPage() {
-    const {id} = useParams<{ id: string }>();
-    const [order, setOrder] = useState<Order | null>(null);
-    const [loading, setLoading] = useState(true);
+    const {orderId} = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (id) {
-            getOrderById(Number(id))
-                .then(setOrder)
-                .finally(() => setLoading(false));
+        if (!orderId) {
+            navigate("/");
         }
-    }, [id]);
-
-    if (loading) return <p className="text-center mt-10">Loading order...</p>;
-    if (!order) return <p className="text-center mt-10">Order not found.</p>;
+    }, [orderId, navigate]);
 
     return (
-        <div className="max-w-2xl mx-auto p-6">
-            <h1 className="text-2xl font-bold text-green-700 mb-2">Thank you for your purchase!</h1>
-            <p className="mb-4">Your order <strong>#{order.id}</strong> was placed successfully.</p>
+        <motion.div
+            className="min-h-[70vh] flex flex-col justify-center items-center text-center px-4"
+            initial={{opacity: 0, y: 40}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.6, ease: "easeOut"}}
+        >
+            <motion.div
+                className="text-6xl mb-4"
+                initial={{scale: 0.8, opacity: 0}}
+                animate={{scale: 1, opacity: 1}}
+                transition={{delay: 0.2, duration: 0.4}}
+            >
+                ✅
+            </motion.div>
 
-            <div className="bg-gray-50 border rounded-lg p-4 mb-6">
-                <p><strong>Status:</strong> {order.status}</p>
-                <p><strong>Total:</strong> ${order.totalAmount.toFixed(2)}</p>
-                <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-            </div>
+            <motion.h1
+                className="text-2xl font-bold mb-2"
+                initial={{opacity: 0, y: 10}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 0.3}}
+            >
+                Order placed successfully!
+            </motion.h1>
 
-            <h2 className="text-lg font-semibold mb-2">Items:</h2>
-            <ul className="space-y-4">
-                {order.items.map((item, index) => (
-                    <li key={index} className="flex items-center gap-4 border-b pb-4">
-                        {item.imageUrl ? (
-                            <img
-                                src={item.imageUrl}
-                                alt={item.productName}
-                                className="w-16 h-16 object-contain rounded"
-                            />
-                        ) : (
-                            <div
-                                className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-gray-500 text-sm">
-                                No image
-                            </div>
-                        )}
-                        <div className="flex-1">
-                            <p className="font-medium">{item.productName}</p>
-                            <p className="text-sm text-gray-500">
-                                {item.quantity} × ${item.pricePerUnit.toFixed(2)}
-                            </p>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            <motion.p
+                className="text-gray-600 mb-4"
+                initial={{opacity: 0, y: 10}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 0.4}}
+            >
+                Thank you for your purchase. You can track your order in your account.
+            </motion.p>
 
-            <div className="flex gap-4 mt-6">
-                <Link
-                    to="/"
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition w-full text-center"
+            <motion.div
+                className="bg-gray-100 border border-gray-300 text-gray-800 text-sm px-4 py-2 rounded mb-6"
+                initial={{opacity: 0, y: 10}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 0.5}}
+            >
+                <span className="font-semibold text-sm">Order ID:</span> #{orderId}
+            </motion.div>
+
+            <motion.div
+                className="flex flex-col sm:flex-row gap-4"
+                initial={{opacity: 0, y: 10}}
+                animate={{opacity: 1, y: 0}}
+                transition={{delay: 0.6}}
+            >
+                <button
+                    onClick={() => navigate("/user")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+                >
+                    Go to My Orders
+                </button>
+                <button
+                    onClick={() => navigate("/")}
+                    className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded"
                 >
                     Back to Home
-                </Link>
-                <Link
-                    to="/orders"
-                    className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition w-full text-center"
-                >
-                    View My Orders
-                </Link>
-            </div>
-        </div>
+                </button>
+            </motion.div>
+        </motion.div>
     );
 }

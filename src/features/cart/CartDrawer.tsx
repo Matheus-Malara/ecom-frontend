@@ -59,9 +59,15 @@ export default function CartDrawer({onClose}: CartDrawerProps) {
                 ×
             </button>
             <h2 className="text-xl font-bold mb-4">My Cart</h2>
-            {cart.items.map((item) => (
-                <CartItemComponent key={item.productId} item={item}/>
-            ))}
+            <div className="space-y-4">
+                {cart.items
+                    .slice()
+                    .sort((a, b) => a.productName.localeCompare(b.productName))
+                    .map((item) => (
+                        <CartItemComponent key={item.productId} item={item}/>
+                    ))}
+            </div>
+
             <p className="text-right font-bold text-lg mt-2">
                 Total: ${cart.totalAmount.toFixed(2)}
             </p>
