@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import {ToastContainer} from "react-toastify";
 import {CartProvider} from "./features/cart/CartProvider";
 import {AuthProvider} from "@/features/auth/useAuth.tsx";
-import {BrowserRouter} from "react-router-dom"; // ⬅️ mover para cá
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

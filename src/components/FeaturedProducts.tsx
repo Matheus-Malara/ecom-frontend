@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import {getFeaturedProducts} from "../services/productApi";
 import type {Product} from "../types/product";
-import ProductCard from "../pages/ProductCard"; // ajuste se estiver em outro lugar
+import ProductCard from "../pages/ProductCard";
 
 export default function FeaturedProducts() {
     const [products, setProducts] = useState<Product[]>([]);
