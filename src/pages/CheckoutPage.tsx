@@ -50,7 +50,7 @@ export default function CheckoutPage() {
             <div className="space-y-4">
                 {cart.items
                     .slice()
-                    .sort((a, b) => a.productName.localeCompare(b.productName)) // mesma ordenação
+                    .sort((a, b) => a.productName.localeCompare(b.productName))
                     .map((item) => (
                         <CartItemComponent key={item.productId} item={item}/>
                     ))}

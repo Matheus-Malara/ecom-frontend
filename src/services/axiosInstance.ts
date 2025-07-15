@@ -30,12 +30,10 @@ api.interceptors.request.use(
         const isAuthRequest =
             config.url?.includes("/auth/login") || config.url?.includes("/auth/refresh");
 
-        // Adiciona Authorization se for necessário
         if (!isAuthRequest && accessToken && config.headers) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
 
-        // Adiciona X-Anonymous-Id sempre que existir
         if (anonymousId && config.headers) {
             config.headers["X-Anonymous-Id"] = anonymousId;
         }

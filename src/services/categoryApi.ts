@@ -7,7 +7,7 @@ export async function getCategories(): Promise<Category[]> {
     const response = await axios.get<StandardResponse<Page<Category>>>("/api/categories", {
         params: {
             active: true,
-            size: 8, // Ajuste conforme necessidade
+            size: 8,
         },
     })
 
