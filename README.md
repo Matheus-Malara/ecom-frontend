@@ -1,6 +1,6 @@
 # Ecom Frontend
 
-Storefront (learning project) for an e-commerce platform where users can browse products, apply filters, manage their cart, register an account, log in, and complete purchases.  
+Storefront for an e-commerce platform where users can browse products, apply filters, manage their cart, register an account, log in, and complete purchases.  
 Anonymous visitors can add items to the cart without logging in, and upon authentication, their cart is automatically transferred to their account.  
 Built with React + TypeScript + Vite + TailwindCSS, fully integrated with a Spring Boot backend and Keycloak for secure authentication.
 
