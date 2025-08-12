@@ -107,6 +107,3 @@ Practice modern React with TypeScript, state management, API integration, authen
 - Node.js (LTS recommended)
 - Running backend at `http://localhost:8081`
 - Local Keycloak instance configured for user authentication
-
-## 📄 License
-No license — educational use only.
